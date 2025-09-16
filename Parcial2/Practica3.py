@@ -10,6 +10,9 @@ class MenuOption:
         self.method = method
         menuOptions.append(self)
 
+    def __call__(self, *args, **kwds):
+        self.method()
+
 menuOptions : list[MenuOption] = []
 
 class InputHandler:
@@ -81,3 +84,58 @@ productos = [
     "Leche"
 ]
 
+cart = []
+
+def mostrarProductos():
+    print("Lista de productos disponibles:")
+    for i, v in enumerate(productos):
+        print(f"\t{i + 1}. {v}.")
+    print("")
+
+def verCarrito():
+    print("Articulos del carrito:")
+    for i, v in enumerate(cart):
+        print(f"\t{i + 1}. {v}.")
+    print("")
+
+def agregarProducto():
+    global cart
+
+    mostrarProductos()
+
+    userInput = iHandler.getInt("> Introduce numero del producto que quieres añadir al carrito:", 1, len(productos))
+
+    if userInput == -1:
+        print("Opcion no valida, por favor introduce un valor valido.")
+        return
+
+    cart.append(productos[userInput - 1])
+
+    print(f"Se añadio {productos[userInput - 1]} al carrito.\n")
+
+def showMenu():
+    for i, v in enumerate(menuOptions):
+        print(f"\t{i + 1}. {v.name}.")
+
+def salir():
+    print("Gracias, sus compras fueron :")
+    for i, v in enumerate(cart):
+        print(f"\t{i + 1}. {v}.")
+    print("Fin del programa.")
+    exit()
+
+MenuOption("Ver productos", mostrarProductos)
+MenuOption("Agregar productos", agregarProducto)
+MenuOption("Ver carrito", verCarrito)
+MenuOption("Salir", salir)
+
+while True:
+    print(" - - TIENDA - -")
+    showMenu()
+    userInput = iHandler.getInt("> Elige una opcion : ", 1, len(menuOptions))
+
+    if userInput == -1:
+        print("Opcion no valida, intenta de nuevo.")
+        continue
+
+    menuOptions[userInput - 1]()
