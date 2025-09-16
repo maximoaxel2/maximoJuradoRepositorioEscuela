@@ -1,6 +1,0 @@
-bin/
-lib/
-lib64/
-include/
-pyenv.cfg/
-.gitignore
